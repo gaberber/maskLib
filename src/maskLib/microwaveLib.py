@@ -601,8 +601,8 @@ def CPW_bend(chip,structure,angle=90,CCW=True,w=None,s=None,radius=None,ptDensit
     struct().updatePos(newStart=struct().getPos((radius*math.sin(angleRadians),(CCW and 1 or -1)*radius*(math.cos(angleRadians)-1))),angle=CCW and -angle or angle)
 
     if bondwires: # bond parameters patched through kwargs
-        bond_angle_density = 8
-        if 'lincolnLabs' in kwargs and kwargs['lincolnLabs']: bond_angle_density = int((2*math.pi*radius)/bond_pitch)
+        bond_angle_density = 4
+        # if 'lincolnLabs' in kwargs and kwargs['lincolnLabs']: bond_angle_density = int((2*math.pi*radius)/bond_pitch)
         clockwise = 1 if CCW else -1
         bond_points = curveAB(startstruct.start, struct().start, clockwise=clockwise, angleDeg=angle, ptDensity=bond_angle_density)
         if not incl_end_bond: bond_points = bond_points[:-1]

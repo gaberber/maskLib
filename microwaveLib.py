@@ -214,9 +214,9 @@ def Strip_stub_open(chip,structure,flipped=False,curve_out=True,r_out=None,w=Non
         dx = 0.
         if flipped:
             if allow_oversize:
-                dx = max(length,r_out)
+                dx = max(length or 0, r_out or 0)
             else:
-                dx = min(w/2,r_out)
+                dx = min(w/2 or 0, r_out or 0)
         
         if allow_oversize:
             l=r_out
@@ -1405,6 +1405,12 @@ def Airbridge(
         delta_right = 0
         delta_left = delta
 
+    db_kwargs = deepcopy(kwargs)
+    if 'layer' in kwargs:
+        # passing another layer keyword to dogbone is wrong
+        # and that "layer" arg is usually meant for CPW but passed down
+        del(db_kwargs['layer']) 
+
     chip.add(DogBone(struct().start,
                      xvr_width,
                      xvr_length,
@@ -1413,16 +1419,16 @@ def Airbridge(
                      rr_br_gap,
                      delta_left,
                      delta_right,
-                     rotation=struct().direction, layer=BRLAYER, **kwargs),
+                     rotation=struct().direction, layer=BRLAYER, **db_kwargs),
              structure=struct().clone())
 
     s_left = struct().cloneAlong(vector=(0, xvr_length/2+delta_left+rr_br_gap))
     s_left.direction += 90
-    Strip_straight(chip, s_left, length=rr_length, w=rr_width, layer=RRLAYER, **kwargs)
+    Strip_straight(chip, s_left, length=rr_length, w=rr_width, layer=RRLAYER, **db_kwargs)
 
     s_right = struct().cloneAlong(vector=(0, -(xvr_length/2+delta_left+rr_br_gap)))
     s_right.direction -= 90
-    Strip_straight(chip, s_right, length=rr_length, w=rr_width, layer=RRLAYER, **kwargs)
+    Strip_straight(chip, s_right, length=rr_length, w=rr_width, layer=RRLAYER, **db_kwargs)
 
     s_l = s_left.cloneAlong(vector=(rr_br_gap,0))
     s_r = s_right.cloneAlong(vector=(rr_br_gap,0))

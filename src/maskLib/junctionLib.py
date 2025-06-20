@@ -1283,8 +1283,14 @@ def DolanJunction(
         struct().direction += rotation
         if backward: struct().direction += 180
         struct().shiftPos(-junctionl/2-jpadw+jpadoverhang)
-        Strip_pad(chip, struct(), jpadw, w=jpadl, r_out=jpadr,layer=JLAYER) # contact pad
-        Strip_straight(chip, struct(), length=junctionl/2-jtaperl-jpadoverhang, w=jarmw, layer=JLAYER)
+        Strip_pad(chip, struct(), jpadw, w=jpadl, r_out=jpadr,layer='55_SEB1') # contact pad
+        # C shape in M1 layer under pads
+        struct().shiftPos(-jpadoverhang-6)
+        Strip_pad(chip, struct(), length=3, w=9, r_out=0, layer='5_M1')
+        Strip_pad(chip, struct(), length=3, w=3, r_out=0, layer='5_M1') 
+        struct().shiftPos(jpadoverhang-0.02)
+
+        Strip_straight(chip, struct(), length=junctionl/2-jtaperl-jpadoverhang+0.02, w=jarmw, layer=JLAYER)
 
         if lincolnLabs: ucstruct = struct().clone() 
         Strip_taper(chip, struct(), length=jtaperl, w0=jarmw, w1=jfingerw, layer=JLAYER)
@@ -1297,8 +1303,15 @@ def DolanJunction(
             Strip_taper(chip, ucstruct, length=jtaperl, w0=jarmw, w1=jfingerw, layer=ULAYER)
             Strip_straight(chip, ucstruct, length=jfingerl+jgap, w=jfingerw, layer=ULAYER)
 
-        Strip_straight(chip, struct(), length=junctionl/2-jgap-jfingerl-jpadoverhang, w=jarmw, layer=JLAYER)
-        Strip_pad(chip, struct(), jpadw, w=jpadl, r_out=jpadr, layer=JLAYER) # contact pad
+        Strip_straight(chip, struct(), length=junctionl/2-jgap-jfingerl-jpadoverhang+0.02, w=jarmw, layer=JLAYER)
+
+        # C shape in M1 layer under pads
+        struct().shiftPos(jpadoverhang-0.02)
+        Strip_pad(chip, struct(), length=3, w=3, r_out=0, layer='5_M1')
+        Strip_pad(chip, struct(), length=3, w=9, r_out=0, layer='5_M1') 
+        struct().shiftPos(-jpadoverhang-6)
+
+        Strip_pad(chip, struct(), jpadw, w=jpadl, r_out=jpadr, layer='55_SEB1') # contact pad
 
 
     else:

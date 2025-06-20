@@ -526,10 +526,10 @@ def Xmon(
 
     s_jj = s_jj_locs[jj_loc]
     junctionl = s_jj_ls[jj_loc]
-    JContact_tab(chip, s_jj.cloneAlong(newDirection=180), **kwargs)
+    # JContact_tab(chip, s_jj.cloneAlong(newDirection=180), **kwargs)
     #keep junction method general
     junctionClass(chip,s_jj.cloneAlong(distance=junctionl/2), junctionl=junctionl, backward=jj_reverse, separation=junctionl,**kwargs)
-    JContact_tab(chip, s_jj.cloneAlong(distance=junctionl), **kwargs)
+    # JContact_tab(chip, s_jj.cloneAlong(distance=junctionl), **kwargs)
 
     struct().updatePos(s_start.getPos()) # initial starting position
     return s # center of xmon
